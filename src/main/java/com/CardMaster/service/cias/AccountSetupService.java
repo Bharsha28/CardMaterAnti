@@ -63,6 +63,11 @@ public class AccountSetupService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found with ID: " + accountId));
     }
 
+    public CardAccount getAccountByEmail(String email) {
+        return accountRepository.findByCardCustomerContactInfoEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("No account found for email: " + email));
+    }
+
     public CardAccount useCard(Long accountId, Double amount) {
         CardAccount account = getAccountById(accountId);
 

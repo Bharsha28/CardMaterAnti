@@ -7,6 +7,7 @@ import ApplicationListPage from './pages/ApplicationListPage';
 import ApplicationFormPage from './pages/ApplicationFormPage';
 import CustomerDashboard from './pages/CustomerDashboard';
 import BranchDashboard from './pages/BranchDashboard';
+import MyCardsPage from './pages/MyCardsPage';
 
 export const paaRoutes = [
   <Route key="customer-list" path="/customers" element={
@@ -50,6 +51,11 @@ export const paaDashboardRoutes = [
   <Route key="branch-dash" path="/dashboard/branch" element={
     <ProtectedRoute allowedRoles={[ROLES.OFFICER]}>
       <BranchDashboard />
+    </ProtectedRoute>
+  }/>,
+  <Route key="my-cards" path="/my-cards" element={
+    <ProtectedRoute allowedRoles={[ROLES.CUSTOMER]}>
+      <MyCardsPage />
     </ProtectedRoute>
   }/>,
 ];

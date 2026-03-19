@@ -6,4 +6,5 @@ export const transactionService = {
   reverse: (id)   => api.post(`/transactions/reverse/${id}`),
   getById: (id)   => api.get(`/transactions/${id}`),
   listAll: ()     => api.get('/transactions'),
+  listMy: ()      => api.get('/transactions/my'),
 };

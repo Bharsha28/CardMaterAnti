@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -67,5 +69,24 @@ public class CustomerController {
 
         List<CustomerDto> customers = service.getAllCustomers(token);
         return ResponseEntity.ok(new ResponseStructure<>("Customers retrieved successfully", customers));
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<ResponseStructure<CustomerDto>> getMyCustomer(
+            Principal principal,
+            @RequestHeader("Authorization") String token) {
+
+        CustomerDto customer = service.getCustomerByEmail(principal.getName(), token);
+        return ResponseEntity.ok(new ResponseStructure<>("Customer profile retrieved successfully", customer));
+    }
+
+    @PutMapping("/my")
+    public ResponseEntity<ResponseStructure<CustomerDto>> updateMyCustomer(
+            Principal principal,
+            @Valid @RequestBody CustomerDto dto,
+            @RequestHeader("Authorization") String token) {
+
+        CustomerDto updated = service.updateCustomerByEmail(principal.getName(), dto, token);
+        return ResponseEntity.ok(new ResponseStructure<>("Customer profile updated successfully", updated));
     }
 }

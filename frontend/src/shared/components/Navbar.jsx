@@ -1,5 +1,6 @@
-import { Bell, Search } from 'lucide-react';
+import { Bell, Search, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const ROLE_COLORS = {
   ADMIN: 'role-ADMIN',
@@ -10,8 +11,14 @@ const ROLE_COLORS = {
 };
 
 export default function Navbar({ title = 'Dashboard' }) {
-  const { user, role } = useAuth();
+  const { user, role, logout } = useAuth();
+  const navigate = useNavigate();
   const initial = (user?.sub || user?.email || 'U').charAt(0).toUpperCase();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <header className="navbar">
@@ -20,10 +27,6 @@ export default function Navbar({ title = 'Dashboard' }) {
       </div>
 
       <div className="navbar-right">
-        <button className="btn btn-ghost btn-icon">
-          <Bell size={18} />
-        </button>
-
         <div className="user-badge">
           <div className="user-avatar">{initial}</div>
           <div>
@@ -37,6 +40,23 @@ export default function Navbar({ title = 'Dashboard' }) {
             )}
           </div>
         </div>
+        
+        <button 
+          onClick={handleLogout}
+          className="btn btn-ghost"
+          style={{ 
+            padding: '8px', 
+            borderRadius: '50%',
+            color: '#ef4444',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s'
+          }}
+          title="Logout"
+        >
+          <LogOut size={20} />
+        </button>
       </div>
     </header>
   );

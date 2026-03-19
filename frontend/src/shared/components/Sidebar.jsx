@@ -54,6 +54,13 @@ const moduleLinks = [
     ]
   },
   {
+    section: 'My Cards',
+    roles: [ROLES.CUSTOMER],
+    links: [
+      { to: '/my-cards', label: 'My Cards', icon: <CreditCard size={18}/>, roles: [ROLES.CUSTOMER] },
+    ]
+  },
+  {
     section: 'Transactions',
     roles: [ROLES.ADMIN, ROLES.OFFICER, ROLES.CUSTOMER, ROLES.RISK],
     links: [
@@ -117,13 +124,6 @@ export default function Sidebar() {
           );
         })}
       </nav>
-
-      <div className="sidebar-footer">
-        <button className="logout-btn" onClick={handleLogout}>
-          <LogOut size={18} />
-          <span>Logout</span>
-        </button>
-      </div>
     </aside>
   );
 }

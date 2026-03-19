@@ -20,4 +20,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     boolean existsByApplicationApplicationId(Long applicationId);
 
     Optional<Card> findByApplicationApplicationId(Long applicationId);
+
+    List<Card> findByCustomerContactInfoEmail(String email);
 }

@@ -35,6 +35,7 @@ export default function BranchDashboard() {
         </div>
         <div style={{ display:'flex', gap:10 }}>
           <button className="btn btn-outline" onClick={() => navigate('/customers/new')}><UserPlus size={16}/> Add Customer</button>
+          <button className="btn btn-outline" onClick={() => navigate('/cards')}><PlusCircle size={16}/> Issue Card</button>
           <button className="btn btn-primary" onClick={() => navigate('/applications/new')}><FileText size={16}/> New Application</button>
         </div>
       </div>
@@ -56,29 +57,56 @@ export default function BranchDashboard() {
         ))}
       </div>
 
-      <div className="card">
-        <div style={{ fontWeight:700, marginBottom:16 }}>Pending Applications — Action Required</div>
-        {loading ? <div className="loading-overlay"><div className="spinner"/></div> : (
-          <div className="table-wrapper">
-            <table>
-              <thead><tr><th>App ID</th><th>Customer</th><th>Card Type</th><th>Requested Limit</th><th>Status</th></tr></thead>
-              <tbody>
-                {pending.slice(0,10).map(a => (
-                  <tr key={a.applicationId} style={{ cursor:'pointer' }} onClick={() => navigate(`/applications`)}>
-                    <td>#{a.applicationId}</td>
-                    <td>{a.customerId}</td>
-                    <td>{a.cardType || '—'}</td>
-                    <td>{a.requestedLimit ? `₹${Number(a.requestedLimit).toLocaleString()}` : '—'}</td>
-                    <td><span className={`badge ${STATUS_BADGE[a.status]||'badge-neutral'}`}>{a.status}</span></td>
-                  </tr>
-                ))}
-                {pending.length === 0 && (
-                  <tr><td colSpan={5} style={{ textAlign:'center', padding:'32px', color:'var(--text-secondary)' }}>No pending applications 🎉</td></tr>
-                )}
-              </tbody>
-            </table>
+      <div style={{ display:'grid', gridTemplateColumns:'1.5fr 1fr', gap:24 }}>
+        <div className="card">
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+            <h3 style={{ fontWeight:700 }}>Pending Applications</h3>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/applications')}>View All</button>
           </div>
-        )}
+          {loading ? <div className="spinner"/> : (
+            <div className="table-wrapper">
+              <table>
+                <thead><tr><th>App ID</th><th>Customer</th><th>Card Type</th><th>Status</th></tr></thead>
+                <tbody>
+                  {pending.slice(0,5).map(a => (
+                    <tr key={a.applicationId} onClick={() => navigate(`/applications`)} style={{ cursor:'pointer' }}>
+                      <td>#{a.applicationId}</td>
+                      <td>{a.customerId}</td>
+                      <td>{a.cardType || '—'}</td>
+                      <td><span className={`badge ${STATUS_BADGE[a.status]||'badge-neutral'}`}>{a.status}</span></td>
+                    </tr>
+                  ))}
+                  {pending.length === 0 && <tr><td colSpan={4} style={{ textAlign:'center', padding:20, color:'var(--text-muted)' }}>No pending apps.</td></tr>}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        <div className="card">
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+            <h3 style={{ fontWeight:700 }}>Recent Customers</h3>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/customers')}>View All</button>
+          </div>
+          {loading ? <div className="spinner"/> : (
+            <div className="table-wrapper">
+              <table>
+                <thead><tr><th>ID</th><th>Name</th><th>Action</th></tr></thead>
+                <tbody>
+                  {customers.slice(0,5).map(c => (
+                    <tr key={c.customerId || c.id}>
+                      <td>#{c.customerId || c.id}</td>
+                      <td>{c.name || `${c.firstName} ${c.lastName}`}</td>
+                      <td>
+                        <button className="btn btn-ghost btn-icon btn-sm" onClick={() => navigate(`/customers/${c.customerId || c.id}`)}><Users size={14}/></button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

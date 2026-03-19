@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -69,5 +70,12 @@ public class TransactionController {
     public ResponseEntity<List<TransactionDto>> list() {
         List<Transaction> all = service.listAll();
         return ResponseEntity.ok(all.stream().map(mapper::toDTO).toList());
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<List<TransactionDto>> listMy(Principal principal) {
+        List<Transaction> my = service.listByEmail(principal.getName());
+        return ResponseEntity.ok(my.stream().map(mapper::toDTO).toList());
     }
 }

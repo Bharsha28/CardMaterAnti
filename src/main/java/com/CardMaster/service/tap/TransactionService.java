@@ -152,6 +152,11 @@ public class TransactionService {
     public List<Transaction> listAll() {
         return transactionRepo.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public List<Transaction> listByEmail(String email) {
+        return transactionRepo.findByAccount_Card_Customer_ContactInfo_Email(email);
+    }
 }
 
 

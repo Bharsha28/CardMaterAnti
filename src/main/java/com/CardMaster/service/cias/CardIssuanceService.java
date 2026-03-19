@@ -11,6 +11,7 @@ import com.CardMaster.model.cias.Card;
 import com.CardMaster.model.paa.CardApplication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -57,9 +58,18 @@ public class CardIssuanceService {
                 .orElseThrow(() -> new IllegalArgumentException("Card not found with ID: " + cardId));
     }
 
-    public Card blockCard(Long cardId) {
+    public Card blockCard(Long cardId) { // Changed parameter type to Long to match existing usage
         Card card = getCardById(cardId);
         card.setStatus(CardStatus.BLOCKED);
         return cardRepository.save(card);
+    }
+
+    public Card getCardByApplicationId(Long applicationId) {
+        return cardRepository.findByApplicationApplicationId(applicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Card not found for application ID: " + applicationId));
+    }
+
+    public List<Card> getCardsByEmail(String email) {
+        return cardRepository.findByCustomerContactInfoEmail(email);
     }
 }

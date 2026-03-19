@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/accounts")
 @RequiredArgsConstructor
@@ -26,6 +28,12 @@ public class AccountSetupController {
     @GetMapping("/{accountId}")
     public ResponseEntity<CardAccountResponseDto> getAccount(@PathVariable Long accountId) {
         CardAccount account = accountService.getAccountById(accountId);
+        return ResponseEntity.ok(accountMapper.toDTO(account));
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<CardAccountResponseDto> getMyAccount(Principal principal) {
+        CardAccount account = accountService.getAccountByEmail(principal.getName());
         return ResponseEntity.ok(accountMapper.toDTO(account));
     }
 

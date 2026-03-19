@@ -67,6 +67,15 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
+    // --- Get Customer by Email ---
+    public CustomerDto getCustomerByEmail(String email, String token) {
+        jwtUtil.extractUsername(token.substring(7)); // validate token
+
+        Customer customer = customerRepository.findByContactInfoEmail(email)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with email: " + email));
+        return EntityMapper.toCustomerDto(customer);
+    }
+
     // --- Get All Customers ---
     public List<CustomerDto> getAllCustomers(String token) {
         jwtUtil.extractUsername(token.substring(7)); // validate token
@@ -77,5 +86,21 @@ public class CustomerService {
             dtos.add(EntityMapper.toCustomerDto(customer));
         }
         return dtos;
+    }
+
+    public CustomerDto updateCustomerByEmail(String email, CustomerDto dto, String token) {
+        jwtUtil.extractUsername(token.substring(7)); // validate token
+
+        Customer existing = customerRepository.findByContactInfoEmail(email)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with email: " + email));
+
+        existing.setName(dto.getName());
+        existing.setDob(java.time.LocalDate.parse(dto.getDob()));
+        existing.setIncome(dto.getIncome());
+        existing.setEmploymentType(Customer.EmploymentType.valueOf(dto.getEmploymentType()));
+        // Note: We don't allow status update via this endpoint for now as it's a self-service update
+
+        Customer updated = customerRepository.save(existing);
+        return EntityMapper.toCustomerDto(updated);
     }
 }
