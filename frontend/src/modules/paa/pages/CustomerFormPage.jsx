@@ -122,7 +122,7 @@ export default function CustomerFormPage() {
             </div>
 
             <div className="form-group">
-              <label className="required"><Email size={14} /> Email Address</label>
+              <label className="required"><Mail size={14} /> Email Address</label>
               <input {...register('email')} type="email" placeholder="john@example.com" className={errors.email ? 'error' : ''} />
               {errors.email && <span className="error-msg">{errors.email.message}</span>}
             </div>

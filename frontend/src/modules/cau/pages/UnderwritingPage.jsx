@@ -203,8 +203,8 @@ export default function UnderwritingPage() {
                 <label className="required">Decision</label>
                 <select {...rDecision('decisionType')} className={eDecision.decisionType?'error':''}>
                   <option value="">Select decision…</option>
-                  <option value="APPROVED">APPROVED</option>
-                  <option value="REJECTED">REJECTED</option>
+                  <option value="APPROVE">APPROVED</option>
+                  <option value="REJECT">REJECTED</option>
                   <option value="CONDITIONAL">CONDITIONAL</option>
                 </select>
                 {eDecision.decisionType && <span className="error-msg">{eDecision.decisionType.message}</span>}
